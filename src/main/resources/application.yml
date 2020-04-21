@@ -1,0 +1,26 @@
+
+server:
+  port: 8100
+
+spring:
+  application:
+    name: post-service
+  datasource:
+    url: jdbc:postgresql://pixelgram.cjhzkqqc8ctk.us-east-1.rds.amazonaws.com:5432/postgres
+    username: postgres
+    password: cognizant
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+    generate-ddl: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
