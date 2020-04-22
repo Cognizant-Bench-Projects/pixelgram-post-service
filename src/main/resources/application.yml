@@ -19,6 +19,9 @@ spring:
             non_contextual_creation: true
     show-sql: true
     generate-ddl: false
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
 
 eureka:
   client:

@@ -1,12 +1,11 @@
 package com.cognizant.controller;
 
+import com.cognizant.CommentServiceProxy;
+import com.cognizant.model.Comment;
 import com.cognizant.model.Post;
 import com.cognizant.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,8 +17,28 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private CommentServiceProxy proxy;
+
     @GetMapping
     public List<Post> getAllPosts() {
-        return this.postService.getAllPosts();
+        List<Post> posts = this.postService.getAllPosts();
+        for (Post post: posts) {
+            List<Comment> comments = this.proxy.getCommentsByPost(post.getId());
+            post.setNumberOfComments(comments.size());
+        }
+        return posts;
+    }
+
+    @GetMapping("/{postId}")
+    public Post getPostById(@PathVariable int postId) {
+        Post post = this.postService.getPostById(postId);
+        if (post == null) {
+            return null;
+        }
+
+        List<Comment> comments = this.proxy.getCommentsByPost(postId);
+        post.setComments(comments);
+        return post;
     }
 }
