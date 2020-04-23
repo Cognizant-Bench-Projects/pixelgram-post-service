@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-//@FeignClient(name = "comment-service", url = "localhost:8101")
 @FeignClient(name = "zuul-gateway", url = "localhost:8765/comment-service")
 public interface CommentServiceProxy {
 
