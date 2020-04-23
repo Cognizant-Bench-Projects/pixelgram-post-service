@@ -21,6 +21,7 @@ public class PostService {
     public Post getPostById(int id) {
         try {
             Post p = this.postRepository.getOne(id);
+            System.out.println(p);
             return p;
         } catch (EntityNotFoundException e) {
             return null;

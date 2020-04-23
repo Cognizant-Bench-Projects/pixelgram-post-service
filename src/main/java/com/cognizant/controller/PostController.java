@@ -24,8 +24,7 @@ public class PostController {
     public List<Post> getAllPosts() {
         List<Post> posts = this.postService.getAllPosts();
         for (Post post: posts) {
-            List<Comment> comments = this.proxy.getCommentsByPost(post.getId());
-            post.setNumberOfComments(comments.size());
+            post.setNumberOfComments(this.proxy.getNumberOfCommentsByPost(post.getId()));
         }
         return posts;
     }
@@ -36,8 +35,8 @@ public class PostController {
         if (post == null) {
             return null;
         }
-
-        List<Comment> comments = this.proxy.getCommentsByPost(postId);
+        post.setNumberOfComments(this.proxy.getNumberOfCommentsByPost(post.getId()));
+        List<Comment> comments = this.proxy.getCommentsByPost(postId, 0);
         post.setComments(comments);
         return post;
     }
