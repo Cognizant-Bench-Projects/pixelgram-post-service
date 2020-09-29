@@ -14,8 +14,9 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @NotNull
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @NotNull
     private String content;
@@ -26,10 +27,10 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, Post post, String username, String content, String date) {
+    public Comment(int id, Post post, User user, String content, String date) {
         this.id = id;
         this.post = post;
-        this.username = username;
+        this.user = user;
         this.content = content;
         this.date = date;
     }
@@ -50,12 +51,12 @@ public class Comment {
         this.post = post;
     }
 
-    public String getUsername() {
-        return username;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getContent() {
@@ -79,7 +80,7 @@ public class Comment {
         return "Comment{" +
                 "id=" + id +
                 ", post=" + post +
-                ", username='" + username + '\'' +
+                ", user=" + user +
                 ", content='" + content + '\'' +
                 ", date='" + date + '\'' +
                 '}';

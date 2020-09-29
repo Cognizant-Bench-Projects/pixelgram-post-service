@@ -18,13 +18,14 @@ public class PostController {
     private PostService postService;
 
     @Autowired
-    private CommentServiceProxy proxy;
+    private CommentServiceProxy commentProxy;
 
     @GetMapping
     public List<Post> getAllPosts() {
         List<Post> posts = this.postService.getAllPosts();
         for (Post post: posts) {
-            post.setNumberOfComments(this.proxy.getNumberOfCommentsByPost(post.getId()));
+            post.setNumberOfComments(this.commentProxy.getNumberOfCommentsByPost(post.getId()));
+            post.setLikes(post.getUserThatLikes().size());
         }
         return posts;
     }
@@ -35,9 +36,10 @@ public class PostController {
         if (post == null) {
             return null;
         }
-        post.setNumberOfComments(this.proxy.getNumberOfCommentsByPost(post.getId()));
-        List<Comment> comments = this.proxy.getCommentsByPost(postId, 0);
+        post.setNumberOfComments(this.commentProxy.getNumberOfCommentsByPost(post.getId()));
+        List<Comment> comments = this.commentProxy.getCommentsByPost(postId, 0);
         post.setComments(comments);
+        post.setLikes(post.getUserThatLikes().size());
         return post;
     }
 }

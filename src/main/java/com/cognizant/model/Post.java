@@ -17,11 +17,16 @@ public class Post {
     @NotNull
     private String imageUrl;
 
-    @NotNull
-    private String username;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @NotNull
-    private int likes;
+    @ManyToMany
+    @JoinTable(name = "user_like_post",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> userThatLikes;
 
     @NotNull
     private String date;
@@ -32,15 +37,18 @@ public class Post {
     @Transient
     private int numberOfComments;
 
+    @Transient
+    private int likes;
+
     public Post() {
     }
 
-    public Post(int id, String description, String imageUrl, String username, int likes, String date, List<Comment> comments) {
+    public Post(int id, String description, String imageUrl, User user, List<User> userThatLikes, String date, List<Comment> comments) {
         this.id = id;
         this.description = description;
         this.imageUrl = imageUrl;
-        this.username = username;
-        this.likes = likes;
+        this.user = user;
+        this.userThatLikes = userThatLikes;
         this.date = date;
         this.comments = comments;
     }
@@ -69,12 +77,12 @@ public class Post {
         this.imageUrl = imageUrl;
     }
 
-    public String getUsername() {
-        return username;
+    public List<User> getUserThatLikes() {
+        return userThatLikes;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserThatLikes(List<User> userThatLikes) {
+        this.userThatLikes = userThatLikes;
     }
 
     public int getLikes() {
@@ -101,6 +109,14 @@ public class Post {
         this.comments = comments;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public int getNumberOfComments() {
         return numberOfComments;
     }
@@ -115,10 +131,12 @@ public class Post {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", username='" + username + '\'' +
-                ", likes=" + likes +
+                ", user=" + user +
+                ", userThatLikes=" + userThatLikes +
                 ", date='" + date + '\'' +
                 ", comments=" + comments +
+                ", numberOfComments=" + numberOfComments +
+                ", likes=" + likes +
                 '}';
     }
 }
